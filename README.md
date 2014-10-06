@@ -5,7 +5,19 @@ GoogleBookmarkHelper
 
 # 手順
 
-GoogleBookmarkHelper.crx を拡張機能のページに追加
+rake googlebookmarkhelper:setup[appid]  # Yahoo! の appid 登録
+
+↓
+
+拡張機能のページ
+
+↓
+
+パッケージ化されていない拡張機能を読み込む...
+
+↓
+
+GoogleBookmarkHelper フォルダを選択
 
 ↓
 

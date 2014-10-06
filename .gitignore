@@ -1,0 +1,10 @@
+## .gitignore ##
+# ignore all
+/*
+*/
+.DS_Store
+# allow any
+!README.md
+!GoogleBookmarkHelper
+!.gitignore
+!Rakefile
