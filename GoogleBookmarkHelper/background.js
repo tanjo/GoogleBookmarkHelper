@@ -24,14 +24,16 @@ function getNow() {
   return yyyy+"-"+mm+"-"+dd;
 }
 
-function bookmark(label, title, url) {
+function bookmark(label, title, url, selectedText) {
   label = getNow() + label;
   var url = "http://www.google.com/bookmarks/mark?op=edit&bkmk="
           + encodeURIComponent(url)
           + "&title="
           + encodeURIComponent(title)
           + "&labels="
-          + label;
+          + label
+          + "&annotation="
+          + encodeURIComponent(selectedText);
   openPopup(url);
 }
 
@@ -40,13 +42,17 @@ function openPopup(url) {
 }
 
 chrome.browserAction.onClicked.addListener(function(activeTab) {
-  chrome.tabs.getSelected(null,function(tab) {
+  chrome.tabs.executeScript( {
+    code: "window.getSelection().toString();"
+  }, function(selection) {
+    chrome.tabs.getSelected(null,function(tab) {
       keyPhrase(tab.title, function(responseJson) {
         var label = "";
         for (var key in responseJson) {
           label += "," + key;
         }
-        bookmark(label, tab.title, tab.url);
+        bookmark(label, tab.title, tab.url, selection);
       });
     });
+  });
 });
