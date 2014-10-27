@@ -1,3 +1,23 @@
+function checkUrl(url) {
+  var url = "https://www.google.com/bookmarks/find?output=xml&q=" + url;
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", url, true);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4) {
+      var responseXML = xhr.responseXML.documentElement;
+      var xmlApiReply = responseXML.getElementsByTagName("xml_api_reply");
+      var bookmarks = responseXML.getElementsByTagName("bookmarks");
+      var url = responseXML.getElementsByTagName("url");
+      if (bookmarks.length > 0 && url.length > 0) {
+        chrome.browserAction.setIcon({"path":"icon_red.png"});
+      } else {
+        chrome.browserAction.setIcon({"path":"icon.png"});
+      }
+    }
+  };
+  xhr.send();
+}
+
 function keyPhrase(text, callback) {
   var yURL = "http://jlp.yahooapis.jp/KeyphraseService/V1/extract?appid={%appid%}&sentence="
            + encodeURIComponent(text)
@@ -7,9 +27,7 @@ function keyPhrase(text, callback) {
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4) {
       // JSON.parse does not evaluate the attacker's scripts.
-      console.log(xhr.responseText);
       var resp = JSON.parse(xhr.responseText);
-      console.log(resp);
       callback(resp);
     }
   }
@@ -55,4 +73,14 @@ chrome.browserAction.onClicked.addListener(function(activeTab) {
       });
     });
   });
+});
+
+chrome.tabs.onActivated.addListener(function(activeInfo) {
+  chrome.tabs.get(activeInfo.tabId, function(tab) {
+    checkUrl(tab.url);
+  });
+});
+
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+  checkUrl(tab.url);
 });

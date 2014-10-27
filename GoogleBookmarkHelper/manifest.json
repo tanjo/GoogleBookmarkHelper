@@ -3,7 +3,7 @@
 
   "name" : "GoogleBookmarkHelper",
   "description" : "Google Bookmark に登録する",
-  "version" : "1.0",
+  "version" : "1.0.1",
 
   "permissions" : [
     "tabs",
@@ -17,6 +17,9 @@
   },
 
   "browser_action" : {
+    "100" : "icon_blue.png",
+    "101" : "icon_red.png",
+    "102" : "icon.png",
     "default_icon" : "icon.png"
   }
 }
